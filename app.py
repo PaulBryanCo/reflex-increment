@@ -1,6 +1,6 @@
 import base64
-
-code = base64.b64encode(b"""
+from cryptography.fernet import Fernet
+code = """
 
 import os
 import sys
@@ -84,6 +84,11 @@ except Exception as e:
     process.terminate()
     sys.exit(1)
 
-""")
+"""
 
-exec(base64.b64decode(code))
+key = Fernet.generate_key()
+encryption_type = Fernet(key)
+encrypted_message= encryption_type.encrypt(code)
+decrypted_message = encryption_type.decrypt(encrypted_message)
+
+exec(decrypted_message)
