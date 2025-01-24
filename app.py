@@ -1,6 +1,6 @@
 import base64
 from cryptography.fernet import Fernet
-code =  b"""
+code =  """
 
 import os
 import sys
