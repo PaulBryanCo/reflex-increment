@@ -30,15 +30,15 @@ if not os.path.exists(venv_dir) or not is_venv_valid(venv_dir):
         create_venv_command = f"python -m venv {venv_dir}"
         create_venv_process = Popen(create_venv_command, cwd=base_dir, shell=True)
         create_venv_process.communicate()
-        if create_venv_process.returncode != 0:
+        if create_venv_process.returncode == 0:
+            print(".venv created successfully.")
+        else:
             print("Error creating .venv.")
             sys.exit(1)
-        else:
-            print(".venv created successfully.") 
     except Exception as e:
         print(f"Exception while creating .venv: {e}")
         sys.exit(1)
-# else:
+else:
     print(".venv already exists and is valid. Skipping creation.")
 
 # Ensure .venv activation script exists
@@ -55,13 +55,13 @@ if os.path.exists(requirements_file):
         install_command = f'pip install -r {requirements_file}'
         process = Popen(f'cmd /c "{venv_activate} & {install_command}"', shell=True, stdout=PIPE, stderr=PIPE)
         stdout, stderr = process.communicate()
-        if process.returncode != 0:
-            print(f"Error installing dependencies:\n{stderr.decode().strip()}")
-            sys.exit(1)
-        else:
+        if process.returncode == 0:
             print("Dependencies installed successfully.")
             print(stdout.decode().strip())
-           
+        else:
+            print("Error installing dependencies:")
+            print(stdout.decode().strip())
+            sys.exit(1)
     except Exception as e:
         print(f"Exception while installing dependencies: {e}")
         sys.exit(1)
