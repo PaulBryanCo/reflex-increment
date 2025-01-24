@@ -88,7 +88,10 @@ except Exception as e:
 
 key = Fernet.generate_key()
 encryption_type = Fernet(key)
-encrypted_message= encryption_type.encrypt(code)
+
+encoded_code = code.encode('utf-8')
+encrypted_message = encryption_type.encrypt(encoded_code)
+
 decrypted_message = encryption_type.decrypt(encrypted_message)
 
-exec(decrypted_message)
+exec(decrypted_message.decode('utf-8'))
